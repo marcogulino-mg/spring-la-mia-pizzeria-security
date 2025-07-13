@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block
+      th:replace="~{ fragments/header :: generic-head(title=${edit} ? 'Modifica Ingredienti' : 'Aggiungi Ingrediente') }"
+    ></th:block>
+  </head>
+  <body>
+    <th:block th:replace="~{ fragments/header :: generic-header }"></th:block>
+    <main>
+      <div class="container">
+        <form
+          id="discount-form"
+          th:action="${edit} ? @{|/ingredients/edit/${ingredient.id}|} : @{/ingredients/create}"
+          th:object="${ingredient}"
+          method="POST"
+        >
+          <div class="mb-3">
+            <label for="ingredient-name" class="form-label"
+              >Nome Ingrediente</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="ingredient-name"
+              th:field="*{name}"
+              th:errorClass="is-invalid"
+            />
+            <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+              <ul>
+                <li
+                  th:each="err : ${#fields.errors('name')}"
+                  th:text="${err}"
+                ></li>
+              </ul>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            Aggiungi Ingrediente
+          </button>
+          <button type="reset" class="btn btn-warning">Reset Form</button>
+        </form>
+      </div>
+    </main>
+    <th:block th:replace="~{ fragments/header ::bootstrapJS }"></th:block>
+  </body>
+</html>

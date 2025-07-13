@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block
+      th:replace="~{ fragments/header :: generic-head(title='Pizze') }"
+    ></th:block>
+  </head>
+  <body>
+    <th:block th:replace="~{ fragments/header :: generic-header }"></th:block>
+    <main>
+      <th:block
+        th:replace="~{ fragments/foodsCards :: foods-card(${pizzas}, pizzas)}"
+      ></th:block>
+    </main>
+    <th:block th:replace="~{ fragments/header ::bootstrapJS }"></th:block>
+  </body>
+</html>

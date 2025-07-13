@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <section class="container" th:fragment="pizza-infos(food)">
+      <h2 th:text="${food.name}"></h2>
+      <img th:src="${food.photo_url}" alt="${food.name}" />
+      <p th:text="${food.description}"></p>
+      <h4
+        th:unless="${food.ingredients.size} > 0"
+        th:text="'Ingredienti non disponibili'"
+      ></h4>
+      <h4 th:if="${food.ingredients.size} > 0" th:text="'Ingredienti'"></h4>
+      <ul th:each="ingredient : ${food.ingredients}">
+        <li th:text="${ingredient.name}"></li>
+      </ul>
+      <h5 th:text="|Prezzo: ${food.price} €|"></h5>
+    </section>
+
+    <section class="container" th:fragment="discount-table(food)">
+      <h2 th:text="|Offerte speciali per + ${food.name}|"></h2>
+      <div
+        th:unless="${food.discounts.size() > 0}"
+        class="alert alert-warning"
+        role="alert"
+      >
+        <h6>Nessuna Offerta Speciale Disponibile</h6>
+      </div>
+      <table class="table" th:if="${food.discounts.size() > 0}">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Data Inizio</th>
+            <th scope="col">Data Fine</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="discount : ${food.discounts}">
+            <th scope="row" th:text="${discount.id}"></th>
+            <td th:text="${discount.title}"></td>
+            <td th:text="${discount.startDate}"></td>
+            <td th:text="${discount.endDate}"></td>
+            <td>
+              <a
+                class="btn btn-warning"
+                th:href="@{|/discounts/edit/${discount.id}|}"
+                >Modifica</a
+              >
+            </td>
+            <td>
+              <form
+                th:action="@{|/discounts/delete/${discount.id}|}"
+                method="post"
+              >
+                <button
+                  class="btn btn-danger"
+                  type="button"
+                  data-bs-toggle="modal"
+                  th:data-bs-target="'#delete-modal-' + ${discount.id}"
+                >
+                  Elimina
+                </button>
+
+                <!-- Modal -->
+                <div
+                  class="modal fade"
+                  th:id="'delete-modal-' + ${discount.id}"
+                  tabindex="-1"
+                >
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                          Eliminazione Offerta
+                        </h1>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body">
+                        <h5>Confermi di voler rimuovere l'offerta?</h5>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Annulla
+                        </button>
+                        <button
+                          class="btn btn-primary"
+                          type="submit"
+                          id="submitBtn"
+                        >
+                          Conferma
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

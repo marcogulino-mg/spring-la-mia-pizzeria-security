@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block
+      th:replace="~{ fragments/header :: generic-head(title=${edit} ? 'Modifica Offerta' : 'Aggiungi Offerta') }"
+    ></th:block>
+  </head>
+  <body>
+    <th:block th:replace="~{ fragments/header :: generic-header }"></th:block>
+    <main>
+      <div class="container">
+        <form
+          id="discount-form"
+          th:action="${edit} ? @{|/discounts/edit/${discount.id}|} : @{/discounts/create}"
+          th:object="${discount}"
+          method="POST"
+        >
+          <input type="hidden" th:field="*{pizza}" id="discount-pizza" />
+          <div class="mb-3">
+            <label for="pizza-name" class="form-label">Titolo Offerta</label>
+            <input
+              type="text"
+              class="form-control"
+              id="discount-title"
+              th:field="*{title}"
+              th:errorClass="is-invalid"
+            />
+            <div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
+              <ul>
+                <li
+                  th:each="err : ${#fields.errors('title')}"
+                  th:text="${err}"
+                ></li>
+              </ul>
+            </div>
+            <div class="mb-3">
+              <label for="startDate" class="form-label"
+                >Data e Ora Inizio</label
+              >
+              <input
+                type="datetime-local"
+                class="form-control"
+                id="startDate"
+                th:field="*{startDate}"
+                th:errorClass="is-invalid"
+              />
+              <div
+                th:if="${#fields.hasErrors('startDate')}"
+                class="invalid-feedback"
+              >
+                <ul>
+                  <li
+                    th:each="err : ${#fields.errors('startDate')}"
+                    th:text="${err}"
+                  ></li>
+                </ul>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="startDate" class="form-label">Data e Ora Fine</label>
+              <input
+                type="datetime-local"
+                class="form-control"
+                id="startDate"
+                th:field="*{endDate}"
+                th:errorClass="is-invalid"
+              />
+              <div
+                th:if="${#fields.hasErrors('endDate')}"
+                class="invalid-feedback"
+              >
+                <ul>
+                  <li
+                    th:each="err : ${#fields.errors('endDate')}"
+                    th:text="${err}"
+                  ></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            Aggiungi Offerta
+          </button>
+          <button type="reset" class="btn btn-warning">Reset Form</button>
+        </form>
+      </div>
+    </main>
+    <th:block th:replace="~{ fragments/header ::bootstrapJS }"></th:block>
+  </body>
+</html>

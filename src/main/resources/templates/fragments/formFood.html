@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container" th:fragment="form-food(url)">
+      <form
+        id="pizza-form"
+        th:action="${url}"
+        th:object="${pizza}"
+        method="POST"
+      >
+        <div class="mb-3">
+          <label for="pizza-name" class="form-label">Nome Pizza</label>
+          <input
+            type="text"
+            class="form-control"
+            id="pizza-name"
+            th:field="*{name}"
+            th:errorClass="is-invalid"
+          />
+          <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+            <ul>
+              <li
+                th:each="err : ${#fields.errors('name')}"
+                th:text="${err}"
+              ></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="pizza-description" class="form-label"
+            >Descrizione Pizza</label
+          >
+          <textarea
+            class="form-control"
+            id="pizza-description"
+            th:field="*{description}"
+            th:errorClass="is-invalid"
+          >
+          </textarea>
+          <div
+            th:if="${#fields.hasErrors('description')}"
+            class="invalid-feedback"
+          >
+            <ul>
+              <li
+                th:each="err : ${#fields.errors('description')}"
+                th:text="${err}"
+              ></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="pizza-url-img" class="form-label"
+            >Link Immagine Pizza</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="pizza-url-img"
+            th:field="*{photo_url}"
+            th:errorClass="is-invalid"
+          />
+          <div
+            th:if="${#fields.hasErrors('photo_url')}"
+            class="invalid-feedback"
+          >
+            <ul>
+              <li
+                th:each="err : ${#fields.errors('photo_url')}"
+                th:text="${err}"
+              ></li>
+            </ul>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text">$</span>
+          <input
+            type="text"
+            class="form-control"
+            id="pizza-price"
+            min="0"
+            th:field="*{price}"
+            th:errorClass="is-invalid"
+          />
+          <div th:if="${#fields.hasErrors('price')}" class="invalid-feedback">
+            <ul>
+              <li
+                th:each="err : ${#fields.errors('price')}"
+                th:text="${err}"
+              ></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mb-5">
+          <div
+            class="single-category form-check"
+            th:each="ingredient : ${ingredients}"
+          >
+            <input
+              class="form-check-input"
+              type="checkbox"
+              th:value="${ingredient.id}"
+              th:id="|ingredient-${ingredient.id}|"
+              th:field="*{ingredients}"
+            />
+            <label
+              class="form-check-label"
+              for="checkDefault"
+              th:text="${ingredient.name}"
+            >
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Aggiungi Pizza</button>
+        <button type="reset" class="btn btn-warning">Reset Form</button>
+      </form>
+    </div>
+  </body>
+</html>

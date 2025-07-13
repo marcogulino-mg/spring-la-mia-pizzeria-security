@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block
+      th:replace="~{ fragments/header :: generic-head(title=${pizza.name}) }"
+    ></th:block>
+  </head>
+  <body>
+    <th:block th:replace="~{ fragments/header :: generic-header }"></th:block>
+    <main>
+      <th:block
+        th:replace="~{ fragments/foodInfos :: pizza-infos(food=${pizza}) }"
+      ></th:block>
+      <div class="container">
+        <a th:href="@{|/pizzas/${pizza.id}/discounts|}" class="btn btn-primary"
+          >Aggiungi Offerta</a
+        >
+      </div>
+      <th:block
+        th:replace="~{ fragments/foodInfos :: discount-table(food=${pizza}) }"
+      ></th:block>
+    </main>
+    <th:block th:replace="~{ fragments/header ::bootstrapJS }"></th:block>
+  </body>
+</html>

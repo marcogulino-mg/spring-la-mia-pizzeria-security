@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div
+      class="row justify-content-center align-items-center"
+      th:fragment="foods-card(food, url)"
+    >
+      <div th:unless="${!food.isEmpty()}">
+        <h2>Prodotti non disponibili!</h2>
+      </div>
+      <div
+        th:if="${!food.isEmpty()}"
+        class="col-auto mb-5"
+        th:each="element : ${food}"
+      >
+        <div class="card" style="width: 18rem">
+          <img
+            th:src="${element.photo_url}"
+            class="card-img-top"
+            th:alt="${element.name}"
+          />
+          <div class="card-body">
+            <h5 class="card-title" th:text="${element.name}"></h5>
+            <p class="card-text" th:text="${element.description}"></p>
+            <h6 class="card-text" th:text="|${element.price} €|"></h6>
+            <div class="container">
+              <a th:href="@{|/${url}/${element.id}|}" class="btn btn-primary"
+                >Info</a
+              >
+              <a th:href="@{|/${url}/${element.id}/discounts|}" class="btn btn-primary"
+                >Aggiungi Offerta</a
+              >
+              <a th:href="@{|/${url}/edit/${element.id}|}" class="btn btn-warning"
+                >Edit</i
+              ></a>
+              <form th:action="@{|/${url}/delete/${element.id}|}" method="post">
+              <button class="btn btn-danger" type="button" data-bs-toggle="modal" th:data-bs-target="'#delete-modal-' + ${element.id}"
+                >Delete
+              </button>
+              
+                <!-- Modal -->
+                <div class="modal fade" th:id="'delete-modal-' + ${element.id}" tabindex="-1">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <h4>Confermi di voler rimuovere il prodotto?</h4>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                        <button class="btn btn-primary" type="submit" id="submitBtn">Conferma</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

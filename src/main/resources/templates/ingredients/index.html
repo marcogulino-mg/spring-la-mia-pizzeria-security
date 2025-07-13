@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block
+      th:replace="~{ fragments/header :: generic-head(title='Ingredienti') }"
+    ></th:block>
+  </head>
+  <body>
+    <th:block th:replace="~{ fragments/header :: generic-header }"></th:block>
+    <main>
+      <section class="container">
+        <h2>Lista Ingredienti</h2>
+        <div
+          th:unless="${ingredients.size() > 0}"
+          class="alert alert-warning"
+          role="alert"
+        >
+          <h6>Nessun Ingrediente Disponibile</h6>
+        </div>
+        <table class="table" th:if="${ingredients.size() > 0}">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Pizze</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="ingredient : ${ingredients}">
+              <th scope="row" th:text="${ingredient.id}"></th>
+              <td th:text="${ingredient.name}"></td>
+              <td th:text="${ingredient.pizzas.size}"></td>
+              <td>
+                <a
+                  class="btn btn-primary"
+                  th:href="@{|/ingredients/${ingredient.id}|}"
+                  >Info</a
+                >
+              </td>
+              <td>
+                <a
+                  class="btn btn-warning"
+                  th:href="@{|/ingredients/edit/${ingredient.id}|}"
+                  >Modifica</a
+                >
+              </td>
+              <td>
+                <form
+                  th:action="@{|/ingredients/delete/${ingredient.id}|}"
+                  method="post"
+                >
+                  <button
+                    class="btn btn-danger"
+                    type="button"
+                    data-bs-toggle="modal"
+                    th:data-bs-target="'#delete-modal-' + ${ingredient.id}"
+                  >
+                    Elimina
+                  </button>
+
+                  <!-- Modal -->
+                  <div
+                    class="modal fade"
+                    th:id="'delete-modal-' + ${ingredient.id}"
+                    tabindex="-1"
+                  >
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">
+                            Eliminazione Ingrediente
+                          </h1>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div class="modal-body">
+                          <h5>Confermi di voler rimuovere l'ingrediente?</h5>
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Annulla
+                          </button>
+                          <button
+                            class="btn btn-primary"
+                            type="submit"
+                            id="submitBtn"
+                          >
+                            Conferma
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="container">
+          <a class="btn btn-primary" th:href="@{/ingredients/create}"
+            >Aggiungi Ingredienti</a
+          >
+        </div>
+      </section>
+    </main>
+    <th:block th:replace="~{ fragments/header ::bootstrapJS }"></th:block>
+  </body>
+</html>
