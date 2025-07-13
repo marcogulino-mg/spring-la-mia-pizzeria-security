@@ -32,14 +32,14 @@
               <a th:href="@{|/${url}/${element.id}|}" class="btn btn-primary"
                 >Info</a
               >
-              <a th:href="@{|/${url}/${element.id}/discounts|}" class="btn btn-primary"
+              <a sec:authorize="hasAuthority('ADMIN')" th:href="@{|/${url}/${element.id}/discounts|}" class="btn btn-primary"
                 >Aggiungi Offerta</a
               >
-              <a th:href="@{|/${url}/edit/${element.id}|}" class="btn btn-warning"
+              <a sec:authorize="hasAuthority('ADMIN')" th:href="@{|/${url}/edit/${element.id}|}" class="btn btn-warning"
                 >Edit</i
               ></a>
               <form th:action="@{|/${url}/delete/${element.id}|}" method="post">
-              <button class="btn btn-danger" type="button" data-bs-toggle="modal" th:data-bs-target="'#delete-modal-' + ${element.id}"
+              <button sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger" type="button" data-bs-toggle="modal" th:data-bs-target="'#delete-modal-' + ${element.id}"
                 >Delete
               </button>
               

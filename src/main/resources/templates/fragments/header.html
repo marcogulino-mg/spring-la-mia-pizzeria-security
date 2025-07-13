@@ -49,6 +49,11 @@
                 Search
               </button>
             </form>
+            <div class="user-info mx-2">
+              <span th:text="'Benvenuto ' + ${#authentication.name}"></span>
+              Roles: <span sec:authentication="principal.authorities"></span>
+              <a class="btn btn-sm btn-outline-danger" href="/logout">Sign Out</a>
+            </div>
           </div>
         </div>
       </nav>
