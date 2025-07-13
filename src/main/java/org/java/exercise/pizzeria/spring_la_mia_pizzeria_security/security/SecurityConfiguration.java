@@ -2,9 +2,12 @@ package org.java.exercise.pizzeria.spring_la_mia_pizzeria_security.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -22,5 +25,25 @@ public class SecurityConfiguration {
                 .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable());
         return http.build();
+    }
+
+    @SuppressWarnings("deprecation")
+    @Bean
+    DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+        // INFO: User Service
+        authProvider.setUserDetailsService(null);
+
+        // INFO: Password Encoder
+        authProvider.setPasswordEncoder(passwordEncoder());
+
+        return authProvider;
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        // EXPLANATION: Delegation of responsibility of the password encoder to the DB
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
